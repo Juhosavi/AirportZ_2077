@@ -46,12 +46,10 @@ async function addNewPlayer(playerName) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            // Add this line to send the playerData in the request body
             body: JSON.stringify(playerData)
         });
 
         const jsonResponse = await response.json();
-        // ... rest of your code
     } catch (error) {
         console.log(error.message);
     } finally {
