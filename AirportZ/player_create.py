@@ -32,9 +32,9 @@ def search_player():
 
 
 
-def add_new_player():
+def add_new_player(player_name, location_ident, inventory_id, yhteys):
     #lisätty tarkistus-funktio check_player_name että onko nimi jo käytössä, kutsuu myös create inventorya
-    name = input("Insert your player name: ").upper()
+    name = player_name
     name = player_name_check(name)
     inventory_id = create_inventory()
     location_ident = start_country()
