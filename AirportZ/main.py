@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import mysql.connector
 from player_create import add_new_player, player_continue, player_destination, search_db, player_name_check, create_inventory, start_country
 from flask_cors import CORS
+import connection
 from travel import travel_choice
 
 app = Flask(__name__)
@@ -9,14 +10,16 @@ CORS(app, resources={r"/loadPlayer": {"origins": "http://localhost:63342"}})
 CORS(app, resources={r"/addPlayer": {"origins": "http://localhost:63342"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-yhteys = mysql.connector.connect(
-    host='127.0.0.1',
-    port=3306,
-    database='testgame',
-    user='root',
-    password='mariacat123',
-    autocommit=True
-)
+yhteys = connection.get_connection()
+
+# yhteys = mysql.connector.connect(
+#     host='127.0.0.1',
+#     port=3306,
+#     database='testi',
+#     user='root',
+#     password='As1allinenSalauS',
+#     autocommit=True
+# )
 
 # Pelaajan lataaminen
 @app.route('/loadPlayer', methods=['GET'])
