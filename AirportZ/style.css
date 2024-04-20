@@ -34,6 +34,6 @@ button:hover {
 #kartta {
     width: 600px;  /* määritellään leveys */
     height: 450px; /* ja korkeus täällä */
-    display: none; /* voit halutessasi pitää tämän piilottamisen täällä */
-    /* muut tyyli-määrittelyt */
+    display: none;
+
 }
