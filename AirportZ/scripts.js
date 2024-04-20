@@ -16,11 +16,11 @@ document.getElementById('loadgame').addEventListener('click', async function () 
         }
     }
 });
+//piilottaa alkubuttonit painettaessa.
 function hideButtons() {
     document.getElementById('loadgame').style.display = 'none';
     document.getElementById('newgame').style.display = 'none';
 }
-
 async function loadPlayer(playerName) {
     try {
         const url = `http://localhost:3000/loadPlayer?name=${encodeURIComponent(playerName)}`;
@@ -33,12 +33,19 @@ async function loadPlayer(playerName) {
     }
 }
 
-//NEW GAME "nappula" toimivuus -------KESKEN------pelaajan laittaminen onnistuu mutta jatkoa ei ole siitä viellä tehty.
+//NEW GAME "nappula" toimivuus---KESKEN---menee alkudialogiin mutta ei viellä jatkoa mihin menee sen jälkeen.
 document.getElementById('newgame').addEventListener('click', async function () {
     const playerName = prompt('Please enter your new player name:');
     if (playerName) {
         //jos saatu nimi lähetetään se addNewPlayerille ja odoetaan.
         await addNewPlayer(playerName);
+        hideButtons();
+        displayGameInfo();
+        //5sekunnin päästä piilottaa alkuinfon
+        setTimeout(function() {
+        hideGameInfo();
+        }, 5000);
+
     }
 });
 async function addNewPlayer(playerName) {
@@ -94,4 +101,14 @@ function haeKaupunki(location) {
         .catch(error => {
             console.error('Error fetching location data:', error);
         });
+}
+//Näyttää Pelinalku infot.
+function displayGameInfo() {
+    const gameInfo = document.getElementById('gameInfo');
+    gameInfo.style.display = 'block';
+}
+//piilottaa pelinalkuinfot.
+function hideGameInfo() {
+    const gameInfo = document.getElementById('gameInfo');
+    gameInfo.style.display = 'none';
 }
