@@ -8,7 +8,6 @@ yhteys = get_connection()
 
 @load_player_bp.route('/loadPlayer', methods=['GET'])
 def load_player():
-    yhteys = connection.get_connection()
     pelaajan_nimi = request.args.get('name')
     kursori = yhteys.cursor()
     kursori.execute("SELECT id, screen_name, location FROM player WHERE screen_name = %s", (pelaajan_nimi,))

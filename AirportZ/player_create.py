@@ -36,7 +36,7 @@ def add_new_player(player_name, location_ident, inventory_id, yhteys):
     #lisätty tarkistus-funktio check_player_name että onko nimi jo käytössä, kutsuu myös create inventorya
     name = player_name
     name = player_name_check(name)
-    inventory_id = create_inventory()
+    # inventory_id = create_inventory()
     location_ident = start_country()
     destination_ident = player_destination(location_ident)
     sql = f"INSERT INTO player (screen_name, player_lvl, battles_won, experience, location, inventory_id, destination, player_health) VALUES ('{name}', 1, 0, 0, '{location_ident}', '{inventory_id}', '{destination_ident}', 100)"
