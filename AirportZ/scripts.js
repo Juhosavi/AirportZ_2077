@@ -1,5 +1,8 @@
 'use strict';
 
+document.getElementById('travel').style.display = 'none';
+document.getElementById('search').style.display = 'none';
+document.getElementById('bandage').style.display = 'none';
 //LOAD GAME "nappula" toimivuus
 document.getElementById('loadgame').addEventListener('click', async function () {
     const playerName = prompt('Please enter your player name:');
@@ -11,15 +14,27 @@ document.getElementById('loadgame').addEventListener('click', async function () 
         if (playerData && playerData.location) {
             // Keskitetään kartta pelaajan sijaintiin
             haeKaupunki(playerData.location);
+            show_action_buttons();
         } else {
             console.log('Player not found.');
         }
     }
 });
+function show_action_buttons(){
+        const travelButton = document.getElementById('travel');
+        travelButton.style.display = 'block';
+        const searchButton = document.getElementById('search');
+        searchButton.style.display = 'block';
+        const bandage = document.getElementById('bandage');
+        bandage.style.display = 'block';
+}
 //piilottaa alkubuttonit painettaessa.
 function hideButtons() {
     document.getElementById('loadgame').style.display = 'none';
     document.getElementById('newgame').style.display = 'none';
+    document.getElementById('travel').style.display = 'none';
+    document.getElementById('search').style.display = 'none';
+    document.getElementById('bandage').style.display = 'none';
 }
 async function loadPlayer(playerName) {
     try {
@@ -46,6 +61,7 @@ document.getElementById('newgame').addEventListener('click', async function () {
             if (playerData && playerData.location) {
                 // Keskitetään kartta pelaajan sijaintiin
                 haeKaupunki(playerData.location);
+                show_action_buttons();
             } else {
                 console.log('Player not found.');
             }

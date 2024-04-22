@@ -4,6 +4,12 @@ h1 {
     font-family: 'Press Start 2P', cursive;
     text-align: center;
     color: crimson;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-top: 0;
+    padding: 10px;
 }
 body {
     display: flex;
@@ -35,8 +41,11 @@ button:hover {
     width: 600px;  /* määritellään leveys */
     height: 450px; /* ja korkeus täällä */
     display: none;
-
+    position: absolute;
+    top: 8rem;
+    right: 12rem;
 }
+
 #gameInfo {
     display: none;
     text-align: center;
@@ -49,4 +58,19 @@ button:hover {
     background: rgba(0,0,0,0.8);
     border-radius: 10px;
     width: 80%;
+}
+#bandage{
+    position: absolute;
+    top: 25rem;
+    left: 25rem;
+}
+#search{
+    position: absolute;
+    top: 15rem;
+    left: 25rem;
+}
+#travel{
+    position: absolute;
+    top: 20rem;
+    left: 25rem;
 }
