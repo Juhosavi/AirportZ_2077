@@ -1,5 +1,5 @@
 'use strict';
-
+//piilottaa alussa "action" nappulat heti.
 document.getElementById('travel').style.display = 'none';
 document.getElementById('search').style.display = 'none';
 document.getElementById('bandage').style.display = 'none';
@@ -14,6 +14,7 @@ document.getElementById('loadgame').addEventListener('click', async function () 
         if (playerData && playerData.location) {
             // Keskitetään kartta pelaajan sijaintiin
             haeKaupunki(playerData.location);
+            //näyttää action buttonit
             show_action_buttons();
         } else {
             console.log('Player not found.');
@@ -28,7 +29,7 @@ function show_action_buttons(){
         const bandage = document.getElementById('bandage');
         bandage.style.display = 'block';
 }
-//piilottaa alkubuttonit painettaessa.
+//piilottaa tällä hetkellä kaikki painettaessa.
 function hideButtons() {
     document.getElementById('loadgame').style.display = 'none';
     document.getElementById('newgame').style.display = 'none';
@@ -61,6 +62,7 @@ document.getElementById('newgame').addEventListener('click', async function () {
             if (playerData && playerData.location) {
                 // Keskitetään kartta pelaajan sijaintiin
                 haeKaupunki(playerData.location);
+                //näyttää action buttonit
                 show_action_buttons();
             } else {
                 console.log('Player not found.');
