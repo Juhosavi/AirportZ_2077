@@ -41,11 +41,16 @@ document.getElementById('newgame').addEventListener('click', async function () {
         await addNewPlayer(playerName);
         hideButtons();
         displayGameInfo();
-        //5sekunnin päästä piilottaa alkuinfon
-        setTimeout(function() {
-        hideGameInfo();
-        }, 5000);
-
+        setTimeout(async () => {
+            const playerData = await loadPlayer(playerName);
+            if (playerData && playerData.location) {
+                // Keskitetään kartta pelaajan sijaintiin
+                haeKaupunki(playerData.location);
+            } else {
+                console.log('Player not found.');
+            }
+            hideGameInfo();
+        }, 5000); //  5 sekuntia
     }
 });
 async function addNewPlayer(playerName) {
