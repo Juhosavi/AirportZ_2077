@@ -3,8 +3,11 @@
 document.getElementById('travel').style.display = 'none';
 document.getElementById('search').style.display = 'none';
 document.getElementById('bandage').style.display = 'none';
-//LOAD GAME "nappula" toimivuus
-document.getElementById('loadgame').addEventListener('click', async function () {
+
+//LOAD GAME "nappula" kuuntelija clickkauksesta
+document.getElementById('loadgame').addEventListener('click', load_game_button)
+//LOAD GAME BUTTON
+async function load_game_button() {
     const playerName = prompt('Please enter your player name:');
     if (playerName) {
         hideButtons();
@@ -20,7 +23,8 @@ document.getElementById('loadgame').addEventListener('click', async function () 
             console.log('Player not found.');
         }
     }
-});
+}
+//Tuo näkyviin action buttonit
 function show_action_buttons(){
         const travelButton = document.getElementById('travel');
         travelButton.style.display = 'block';
@@ -29,7 +33,7 @@ function show_action_buttons(){
         const bandage = document.getElementById('bandage');
         bandage.style.display = 'block';
 }
-//piilottaa tällä hetkellä kaikki painettaessa.
+//piilottaa tällä hetkellä kaikki nappulat
 function hideButtons() {
     document.getElementById('loadgame').style.display = 'none';
     document.getElementById('newgame').style.display = 'none';
@@ -37,6 +41,7 @@ function hideButtons() {
     document.getElementById('search').style.display = 'none';
     document.getElementById('bandage').style.display = 'none';
 }
+//LoadPlayer lähetys backendille
 async function loadPlayer(playerName) {
     try {
         const url = `http://localhost:3000/loadPlayer?name=${encodeURIComponent(playerName)}`;
@@ -49,8 +54,10 @@ async function loadPlayer(playerName) {
     }
 }
 
-//NEW GAME "nappula" toimivuus---KESKEN---menee alkudialogiin mutta ei viellä jatkoa mihin menee sen jälkeen.
-document.getElementById('newgame').addEventListener('click', async function () {
+//NEW GAME "nappula" kuuntelija klikkaukseen
+document.getElementById('newgame').addEventListener('click',newgame_button)
+//NEW GAME Button
+async function newgame_button () {
     const playerName = prompt('Please enter your new player name:');
     if (playerName) {
         //jos saatu nimi lähetetään se addNewPlayerille ja odoetaan.
@@ -70,7 +77,8 @@ document.getElementById('newgame').addEventListener('click', async function () {
             hideGameInfo();
         }, 5000); //  5 sekuntia
     }
-});
+}
+//AddnewPlayer lähetysBackendille
 async function addNewPlayer(playerName) {
     try {
         const url = `http://localhost:3000/addPlayer`;
