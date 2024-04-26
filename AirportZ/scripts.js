@@ -1,4 +1,7 @@
 'use strict';
+var playerName;
+var playerData = null;
+
 //piilottaa alussa "action" nappulat heti.
 document.getElementById('travel').style.display = 'none';
 document.getElementById('search').style.display = 'none';
@@ -8,17 +11,18 @@ document.getElementById('bandage').style.display = 'none';
 document.getElementById('loadgame').addEventListener('click', load_game_button)
 //LOAD GAME BUTTON
 async function load_game_button() {
-    const playerName = prompt('Please enter your player name:');
+    playerName = prompt('Please enter your player name:');
     if (playerName) {
         hideButtons();
         // Haetaan pelaajan tiedot load player funktiosta ja odotetaan awaitilla
-        const playerData = await loadPlayer(playerName);
+        playerData = await loadPlayer(playerName);
         // Tarkistetaan, onko pelaajan tiedot saatu
         if (playerData && playerData.location) {
             // Keskitetään kartta pelaajan sijaintiin
             haeKaupunki(playerData.location);
             //näyttää action buttonit
             show_action_buttons();
+            await fetchFarthestAirport(playerData.location);
         } else {
             console.log('Player not found.');
         }
@@ -58,19 +62,21 @@ async function loadPlayer(playerName) {
 document.getElementById('newgame').addEventListener('click',newgame_button)
 //NEW GAME Button
 async function newgame_button () {
-    const playerName = prompt('Please enter your new player name:');
+    playerName = prompt('Please enter your new player name:');
     if (playerName) {
         //jos saatu nimi lähetetään se addNewPlayerille ja odoetaan.
         await addNewPlayer(playerName);
         hideButtons();
         displayGameInfo();
         setTimeout(async () => {
-            const playerData = await loadPlayer(playerName);
+            playerData = await loadPlayer(playerName);
             if (playerData && playerData.location) {
                 // Keskitetään kartta pelaajan sijaintiin
                 haeKaupunki(playerData.location);
                 //näyttää action buttonit
                 show_action_buttons();
+                await fetchFarthestAirport(playerData.location);
+
             } else {
                 console.log('Player not found.');
             }
@@ -105,7 +111,7 @@ var karttaTaso = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
     maxZoom: 19,
 }).addTo(kartta);
 
-function haeKaupunki(location) {
+function haeKaupunki(location, message = "You are here") {
     var url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(location);
     fetch(url)
         .then(response => response.json())
@@ -115,24 +121,25 @@ function haeKaupunki(location) {
                 var lon = parseFloat(data[0].lon);
 
                 // Aseta näkymä ja zoomaustaso
-                kartta.setView([lat, lon], 13);
+                kartta.setView([lat, lon], 13); // Voit halutessasi poistaa tämän, jos et halua että kartan näkymä muuttuu
 
                 // Näytä kartta-elementti ja päivitä sen koko
                 var karttaElementti = document.getElementById('kartta');
                 karttaElementti.style.display = 'block';
-                kartta.invalidateSize(); // Kutsu tätä funktiota jos kartta oli aiemmin piilossa
+                kartta.invalidateSize();
 
-                // Lisää merkki kartalle jos halutaan näyttää tietty paikka
+                // Lisää merkki kartalle ja käytä annettua viestiä
                 L.marker([lat, lon]).addTo(kartta)
-                    .bindPopup('You are here').openPopup();
+                    .bindPopup(message).openPopup();
             } else {
-                alert('Location not found.');
+                alert('Location not found for ' + location);
             }
         })
         .catch(error => {
-            console.error('Error fetching location data:', error);
+            console.error('Error fetching location data for ' + location + ':', error);
         });
 }
+
 //Näyttää Pelinalku infot.
 function displayGameInfo() {
     const gameInfo = document.getElementById('gameInfo');
@@ -142,4 +149,17 @@ function displayGameInfo() {
 function hideGameInfo() {
     const gameInfo = document.getElementById('gameInfo');
     gameInfo.style.display = 'none';
+}
+async function fetchFarthestAirport(airportIdent) {
+    try {
+        const response = await fetch(`http://localhost:3000/playerdestination?ident=${encodeURIComponent(airportIdent)}`);
+        const data = await response.json();
+        if (data.farthest_airport_ident) {
+            document.getElementById('destination').textContent = data.farthest_airport_ident;
+            haeKaupunki(data.farthest_airport_ident, "You need to go here");
+        }
+    } catch (error) {
+        console.error('Error fetching farthest airport:', error);
+        document.getElementById('destination').textContent = 'Error fetching data';
+    }
 }

@@ -11,6 +11,17 @@ h1 {
     margin-top: 0;
     padding: 10px;
 }
+h2{
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+    color: crimson;
+    position: fixed;
+    top: 5rem;
+    left: 0;
+    right: 0;
+    margin-top: 0;
+    padding: 10px;
+}
 body {
     display: flex;
     flex-direction: column;

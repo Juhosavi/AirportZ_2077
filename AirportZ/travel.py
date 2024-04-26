@@ -87,7 +87,6 @@ def where_to_travel(travel_list, screen_name):
     fuel_count(travel_list, screen_name)
     return airport_ident, screen_name
 
-
 def fuel_count(travel_list, screen_name):
     fuel = search_db(f"SELECT kerosene FROM inventory, player WHERE inventory.inventory_id = player.inventory_id AND player.screen_name = '{screen_name}'")[0][0]
     if len(travel_list) < 4:
