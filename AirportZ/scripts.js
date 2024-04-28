@@ -131,6 +131,8 @@ function haeKaupunki(location, message = "You are here") {
                 // Lisää merkki kartalle ja käytä annettua viestiä
                 L.marker([lat, lon]).addTo(kartta)
                     .bindPopup(message).openPopup();
+
+
             } else {
                 alert('Location not found for ' + location);
             }
@@ -156,7 +158,9 @@ async function fetchFarthestAirport(airportIdent) {
         const data = await response.json();
         if (data.farthest_airport_ident) {
             document.getElementById('destination').textContent = data.farthest_airport_ident;
-            haeKaupunki(data.farthest_airport_ident, "You need to go here");
+            setTimeout(() => haeKaupunki(data.farthest_airport_ident, "You need to go here"), 2000);
+
+
         }
     } catch (error) {
         console.error('Error fetching farthest airport:', error);
