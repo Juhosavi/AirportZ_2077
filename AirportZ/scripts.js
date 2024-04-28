@@ -79,6 +79,7 @@ async function newgame_button () {
                 //näyttää action buttonit
                 show_action_buttons();
                 await fetchFarthestAirport(playerData.location);
+                await display_player_stats(playerName)
 
             } else {
                 console.log('Player not found.');
