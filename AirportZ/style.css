@@ -13,12 +13,12 @@ h1 {
 }
 h2{
     font-family: 'Press Start 2P', cursive;
-    text-align: center;
+    text-align: right;
     color: crimson;
     position: fixed;
-    top: 5rem;
+    top: 40rem;
     left: 0;
-    right: 0;
+    right: 16rem;
     margin-top: 0;
     padding: 10px;
 }
@@ -84,4 +84,17 @@ button:hover {
     position: absolute;
     top: 20rem;
     left: 25rem;
+}
+#player_stats{
+    background-color: black;
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+    color: antiquewhite;
+    position: fixed;
+    top: 4rem;
+    left: 0;
+    right: 0;
+    margin-top: 0;
+    padding: 10px;
+    white-space: pre;
 }

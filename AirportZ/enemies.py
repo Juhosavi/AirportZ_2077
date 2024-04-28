@@ -33,4 +33,4 @@ def get_enemies(new_location):
     return enemy_list
 
 
-get_enemies("EFHK")
+# get_enemies("EFHK")

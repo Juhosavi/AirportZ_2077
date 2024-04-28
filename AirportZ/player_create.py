@@ -126,6 +126,20 @@ def game_info():
     time.sleep(4)
 
 
+# def display_player_stats(screen_name):
+#     player_stats = search_db(f"SELECT player_lvl, experience, player_health, bandage, kerosene FROM player, inventory WHERE inventory.inventory_id = player.inventory_id AND screen_name = '{screen_name}'")
+#     player_lvl, exp, player_hp, bandage, fuel = player_stats[0][0], player_stats[0][1], player_stats[0][2], player_stats[0][3], player_stats[0][4]
+#     if player_lvl == 1:
+#         max_exp = 10
+#         max_hp = 100
+#     elif player_lvl == 2:
+#         max_exp = 20
+#         max_hp = 150
+#     else:
+#         max_exp = "UNLIMITED"
+#         max_hp = 200
+#     print(f"{Fore.GREEN}LVL. {player_lvl}   EXP: {exp}/{max_exp}   HP: {player_hp}/{max_hp}  BANDAGES: {bandage}  FUEL: {fuel}")
+
 def display_player_stats(screen_name):
     player_stats = search_db(f"SELECT player_lvl, experience, player_health, bandage, kerosene FROM player, inventory WHERE inventory.inventory_id = player.inventory_id AND screen_name = '{screen_name}'")
     player_lvl, exp, player_hp, bandage, fuel = player_stats[0][0], player_stats[0][1], player_stats[0][2], player_stats[0][3], player_stats[0][4]
@@ -138,7 +152,8 @@ def display_player_stats(screen_name):
     else:
         max_exp = "UNLIMITED"
         max_hp = 200
-    print(f"{Fore.GREEN}LVL. {player_lvl}   EXP: {exp}/{max_exp}   HP: {player_hp}/{max_hp}  BANDAGES: {bandage}  FUEL: {fuel}")
+    # print(f"{Fore.GREEN}LVL. {player_lvl}   EXP: {exp}/{max_exp}   HP: {player_hp}/{max_hp}  BANDAGES: {bandage}  FUEL: {fuel}")
+    return player_lvl, exp, player_hp, max_exp, max_hp, bandage, fuel
 
 
 def player_continue(screen_name,location):

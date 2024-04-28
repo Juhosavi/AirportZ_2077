@@ -1,11 +1,13 @@
 'use strict';
 var playerName;
 var playerData = null;
+var playerStats = null;
 
 //piilottaa alussa "action" nappulat heti.
 document.getElementById('travel').style.display = 'none';
 document.getElementById('search').style.display = 'none';
 document.getElementById('bandage').style.display = 'none';
+hide_player_stats();
 
 //LOAD GAME "nappula" kuuntelija clickkauksesta
 document.getElementById('loadgame').addEventListener('click', load_game_button)
@@ -22,6 +24,7 @@ async function load_game_button() {
             haeKaupunki(playerData.location);
             //näyttää action buttonit
             show_action_buttons();
+            await display_player_stats(playerName)
             await fetchFarthestAirport(playerData.location);
         } else {
             console.log('Player not found.');
@@ -166,4 +169,46 @@ async function fetchFarthestAirport(airportIdent) {
         console.error('Error fetching farthest airport:', error);
         document.getElementById('destination').textContent = 'Error fetching data';
     }
+}
+
+async function display_player_stats(playerName)
+{
+    playerStats = await displayStats(playerName)
+    const textContainer = document.getElementById("player_stats");
+    let text = document.createTextNode(`LVL: ${playerStats.player_lvl}     EXP: ${playerStats.experience}/${playerStats.max_exp}     HP: ${playerStats.player_health}/${playerStats.max_hp}     BANDAGES: ${playerStats.bandage}     FUEL: ${playerStats.kerosene}`);
+    textContainer.appendChild(text);
+    // const StatsList = document.getElementById("player_stats");
+    // let stats = "";
+    // stats += `Level <li>${playerStats.player_lvl}</li>`;
+    // stats += `experience <li>${playerStats.experience}</li>/${playerStats.max_exp}`;
+    // stats += `HP <li>${playerStats.player_health}</li>/${playerStats.max_hp}`;
+    // stats += `Bandages <li>${playerStats.bandage}</li>`;
+    // stats += `Fuel <li>${playerStats.kerosene}</li>`;
+    //
+    // StatsList.innerHTML = stats;
+    //lisää elementteihin haetut statsit
+    show_player_stats()
+}
+
+async function displayStats(playerName) {
+    try {
+        const url = `http://localhost:3000/displayStats?name=${encodeURIComponent(playerName)}`;
+        const response = await fetch(url);
+        const jsonPlayer = await response.json();
+
+        return jsonPlayer;
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+function show_player_stats()
+{
+        const stats = document.getElementById('player_stats');
+        stats.style.display = 'block';
+}
+
+function  hide_player_stats()
+{
+    document.getElementById('player_stats').style.display = 'none';
 }
