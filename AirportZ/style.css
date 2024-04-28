@@ -53,7 +53,7 @@ button:hover {
     height: 450px; /* ja korkeus täällä */
     display: none;
     position: absolute;
-    top: 8rem;
+    top: 10rem;
     right: 12rem;
 }
 
