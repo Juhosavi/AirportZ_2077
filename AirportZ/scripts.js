@@ -4,6 +4,7 @@ var playerData = null;
 var playerStats = null;
 var closestAirports = null;
 var gifUrl = 'https://media1.tenor.com/m/NnBsjb10pUYAAAAd/airbus-airplane.gif';
+var foundItems = null;
 
 //piilottaa alussa "action" nappulat heti.
 document.getElementById('travel').style.display = 'none';
@@ -15,6 +16,7 @@ hide_travel_dropdown();
 //LOAD GAME "nappula" kuuntelija clickkauksesta
 document.getElementById('loadgame').addEventListener('click', load_game_button)
 document.getElementById('travel').addEventListener('click', get_closest_airports)
+
 //LOAD GAME BUTTON
 async function load_game_button() {
     playerName = prompt('Please enter your player name:');
@@ -181,6 +183,28 @@ async function fetchFarthestAirport(airportIdent) {
     } catch (error) {
         console.error('Error fetching farthest airport:', error);
         document.getElementById('destination').textContent = 'Error fetching data';
+    }
+}
+
+document.getElementById('search').addEventListener('click', search_button);
+
+async function search_button()
+{
+    console.log(playerName);
+    foundItems = await searchAirport(playerName);
+    alert(`You found ${foundItems.bandage} bandage(s) and ${foundItems.fuel} fuel!`)
+}
+
+async function searchAirport(playerName)
+{
+    try {
+        const url = `http://localhost:3000/searchAirport?name=${encodeURIComponent(playerName)}`;
+        const response = await fetch(url);
+        const jsonPlayer = await response.json();
+
+        return jsonPlayer;
+    } catch (error) {
+        console.log(error.message);
     }
 }
 
