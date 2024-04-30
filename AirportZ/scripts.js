@@ -2,15 +2,19 @@
 var playerName;
 var playerData = null;
 var playerStats = null;
+var closestAirports = null;
+var gifUrl = 'https://media1.tenor.com/m/NnBsjb10pUYAAAAd/airbus-airplane.gif';
 
 //piilottaa alussa "action" nappulat heti.
 document.getElementById('travel').style.display = 'none';
 document.getElementById('search').style.display = 'none';
 document.getElementById('bandage').style.display = 'none';
 hide_player_stats();
+hide_travel_dropdown();
 
 //LOAD GAME "nappula" kuuntelija clickkauksesta
 document.getElementById('loadgame').addEventListener('click', load_game_button)
+document.getElementById('travel').addEventListener('click', get_closest_airports)
 //LOAD GAME BUTTON
 async function load_game_button() {
     playerName = prompt('Please enter your player name:');
@@ -48,6 +52,14 @@ function hideButtons() {
     document.getElementById('search').style.display = 'none';
     document.getElementById('bandage').style.display = 'none';
 }
+
+function hide_action_buttons()
+{
+    document.getElementById('travel').style.display = 'none';
+    document.getElementById('search').style.display = 'none';
+    document.getElementById('bandage').style.display = 'none';
+}
+
 //LoadPlayer lähetys backendille
 async function loadPlayer(playerName) {
     try {
@@ -178,22 +190,84 @@ async function display_player_stats(playerName)
     const textContainer = document.getElementById("player_stats");
     let text = document.createTextNode(`LVL: ${playerStats.player_lvl}     EXP: ${playerStats.experience}/${playerStats.max_exp}     HP: ${playerStats.player_health}/${playerStats.max_hp}     BANDAGES: ${playerStats.bandage}     FUEL: ${playerStats.kerosene}`);
     textContainer.appendChild(text);
-    // const StatsList = document.getElementById("player_stats");
-    // let stats = "";
-    // stats += `Level <li>${playerStats.player_lvl}</li>`;
-    // stats += `experience <li>${playerStats.experience}</li>/${playerStats.max_exp}`;
-    // stats += `HP <li>${playerStats.player_health}</li>/${playerStats.max_hp}`;
-    // stats += `Bandages <li>${playerStats.bandage}</li>`;
-    // stats += `Fuel <li>${playerStats.kerosene}</li>`;
-    //
-    // StatsList.innerHTML = stats;
-    //lisää elementteihin haetut statsit
     show_player_stats()
 }
 
 async function displayStats(playerName) {
     try {
         const url = `http://localhost:3000/displayStats?name=${encodeURIComponent(playerName)}`;
+        const response = await fetch(url);
+        const jsonPlayer = await response.json();
+
+        return jsonPlayer;
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+async function get_closest_airports(location)
+{
+    hide_action_buttons();
+    show_travel_dropdown();
+    closestAirports = await getAirports(location);
+    console.log(closestAirports.airport1);
+    document.addEventListener("DOMContentLoaded", fill_airport_dropdown);
+    fill_airport_dropdown(closestAirports);
+}
+
+function fill_airport_dropdown(closestAirports)
+{
+    const selectElement = document.getElementById("airportSelect");
+
+    selectElement.innerHTML = '';//clearaa aiemmat vaihtoehdot
+
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Select an airport";
+    selectElement.appendChild(defaultOption);
+
+    const airports = [closestAirports.airport1, closestAirports.airport2, closestAirports.airport3, closestAirports.airport4, closestAirports.airport5, closestAirports.airport6];
+    console.log(airports[2])
+    airports.forEach(airport => {
+    const option = document.createElement("option");
+    option.value = airport;
+    option.textContent = airport;
+    selectElement.appendChild(option);
+  });
+}
+
+document.getElementById("travel_confirm").addEventListener("click", handleTravelConfirm);
+function handleTravelConfirm() {
+    const selectedAirport = document.getElementById("airportSelect").value;
+
+        if (selectedAirport)
+        {
+            alert(`You selected: ${selectedAirport}`);
+        // siirtyminen uuteen locaan?
+            document.getElementById('kartta').style.display = 'none';
+            hide_action_buttons();
+            hide_travel_dropdown()
+            loadGif(gifUrl);
+        }
+        else
+        {
+            alert("Please select an airport before confirming.");
+        }
+}
+
+function loadGif(url)
+{
+
+    var gifContainer = document.getElementById('gifContainer');
+    var img = document.createElement('img');
+    img.src = url;
+    gifContainer.appendChild(img);
+}
+
+
+async function getAirports(location) {
+    try {
+        const url = `http://localhost:3000/getCloseAirports?name=${encodeURIComponent(playerData.location)}`;
         const response = await fetch(url);
         const jsonPlayer = await response.json();
 
@@ -212,4 +286,18 @@ function show_player_stats()
 function  hide_player_stats()
 {
     document.getElementById('player_stats').style.display = 'none';
+}
+
+function show_travel_dropdown()
+{
+    const travel_dropdown = document.getElementById('airportSelect');
+    travel_dropdown.style.display = 'block';
+    const travel_confirm = document.getElementById('travel_confirm');
+    travel_confirm.style.display = 'block';
+}
+
+function hide_travel_dropdown()
+{
+    document.getElementById('airportSelect').style.display = 'none';
+    document.getElementById('travel_confirm').style.display = 'none';
 }

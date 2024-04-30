@@ -10,7 +10,7 @@ yhteys = get_connection()
 def load_player():
     pelaajan_nimi = request.args.get('name')
     kursori = yhteys.cursor()
-    kursori.execute("SELECT id, screen_name, location FROM player WHERE screen_name = %s", (pelaajan_nimi,))
+    kursori.execute(f"SELECT id, screen_name, location FROM player WHERE screen_name = '{pelaajan_nimi}'")
     tulos = kursori.fetchone()
     kursori.close()
 
