@@ -233,6 +233,55 @@ async function searchAirport(playerName)
     }
 }
 
+document.getElementById('bandage').addEventListener('click', use_bandage);
+
+async function use_bandage()
+{
+    if (playerStats.bandage <= 0)
+    {
+        alert("You have no bandages!")
+    }
+    else
+    {
+        if (playerStats.player_health === playerStats.max_hp)
+        {
+            alert("Your health is already full.")
+        }
+        else
+        {
+            await use_a_bandage()
+            await update_health()
+            await display_player_stats()
+        }
+    }
+
+}
+async function update_health()
+{
+    try {
+        const url = `http://localhost:3000/updateHealth?name=${encodeURIComponent(playerName)}`;
+        const response = await fetch(url);
+        const jsonPlayer = await response.json();
+
+        return jsonPlayer;
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+async function use_a_bandage()
+{
+    try {
+        const url = `http://localhost:3000/useBandage?name=${encodeURIComponent(playerName)}`;
+        const response = await fetch(url);
+        const jsonPlayer = await response.json();
+
+        return jsonPlayer;
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 async function getLocationCoords()
 {
     console.log(playerData.location);
