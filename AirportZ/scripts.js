@@ -282,10 +282,14 @@ function handleTravelConfirm() {
 function loadGif(url)
 {
 
-    var gifContainer = document.getElementById('gifContainer');
-    var img = document.createElement('img');
+    let gifContainer = document.getElementById('gifContainer');
+    let img = document.createElement('img');
     img.src = url;
     gifContainer.appendChild(img);
+    let duration = 10000;
+    setTimeout(function() {
+        gifContainer.removeChild(img);
+    }, duration);
 }
 
 
