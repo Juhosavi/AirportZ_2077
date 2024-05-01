@@ -5,6 +5,9 @@ var playerStats = null;
 var closestAirports = null;
 var gifUrl = 'https://media1.tenor.com/m/NnBsjb10pUYAAAAd/airbus-airplane.gif';
 var foundItems = null;
+let location_coords = null;//viittaa latitudeen location_coords.latitude <--long - samalla tavalla mut .longitude
+let destination_coords = null;//viittaa kuten yllä
+let destinationICAO = null;
 
 //piilottaa alussa "action" nappulat heti.
 document.getElementById('travel').style.display = 'none';
@@ -26,6 +29,7 @@ async function load_game_button() {
         playerData = await loadPlayer(playerName);
         // Tarkistetaan, onko pelaajan tiedot saatu
         if (playerData && playerData.location) {
+            await getLocationCoords()
             // Keskitetään kartta pelaajan sijaintiin
             haeKaupunki(playerData.location);
             //näyttää action buttonit
@@ -88,6 +92,7 @@ async function newgame_button () {
         setTimeout(async () => {
             playerData = await loadPlayer(playerName);
             if (playerData && playerData.location) {
+                await getLocationCoords()
                 // Keskitetään kartta pelaajan sijaintiin
                 haeKaupunki(playerData.location);
                 //näyttää action buttonit
@@ -200,6 +205,58 @@ async function searchAirport(playerName)
 {
     try {
         const url = `http://localhost:3000/searchAirport?name=${encodeURIComponent(playerName)}`;
+        const response = await fetch(url);
+        const jsonPlayer = await response.json();
+
+        return jsonPlayer;
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+async function getLocationCoords()
+{
+    console.log(playerData.location);
+    location_coords = await getLocationCoordinates();
+    await getDestinationCoordinates();
+    console.log(location_coords.latitude);
+    console.log(destination_coords.latitude);
+}
+
+async function getLocationCoordinates() {
+    try {
+        const url = `http://localhost:3000/getCoordinates?name=${encodeURIComponent(playerData.location)}`;
+        const response = await fetch(url);
+        const jsonPlayer = await response.json();
+
+        return jsonPlayer;
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+async function getDestinationCoordinates()
+{
+    destinationICAO = await getDestinationICAO();
+    console.log(destinationICAO.destination);
+    destination_coords = await getDestinationCoords();
+}
+
+async function getDestinationCoords() {
+    try {
+        const url = `http://localhost:3000/getCoordinates?name=${encodeURIComponent(destinationICAO.destination)}`;
+        const response = await fetch(url);
+        const jsonPlayer = await response.json();
+
+        return jsonPlayer;
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+async function getDestinationICAO()
+{
+    try {
+        const url = `http://localhost:3000/getDestination?name=${encodeURIComponent(playerName)}`;
         const response = await fetch(url);
         const jsonPlayer = await response.json();
 
