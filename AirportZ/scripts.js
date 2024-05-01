@@ -31,7 +31,7 @@ async function load_game_button() {
         if (playerData && playerData.location) {
             await getLocationCoords()
             // Keskitetään kartta pelaajan sijaintiin
-            haeKaupunki(playerData.location);
+            haeKaupunki(location_coords.latitude, location_coords.longitude);
             //näyttää action buttonit
             show_action_buttons();
             await display_player_stats(playerName)
@@ -94,7 +94,7 @@ async function newgame_button () {
             if (playerData && playerData.location) {
                 await getLocationCoords()
                 // Keskitetään kartta pelaajan sijaintiin
-                haeKaupunki(playerData.location);
+                haeKaupunki(location_coords.latitude, location_coords.longitude);
                 //näyttää action buttonit
                 show_action_buttons();
                 await fetchFarthestAirport(playerData.location);
@@ -134,36 +134,50 @@ var karttaTaso = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
     maxZoom: 19,
 }).addTo(kartta);
 
-function haeKaupunki(location, message = "You are here") {
-    var url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(location);
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            if (data && data.length > 0) {
-                var lat = parseFloat(data[0].lat);
-                var lon = parseFloat(data[0].lon);
+function haeKaupunki(latitude, longitude, message = "You are here") {
+    // Aseta näkymä ja zoomaustaso
+    kartta.setView([latitude, longitude], 13); // Voit halutessasi poistaa tämän, jos et halua että kartan näkymä muuttuu
 
-                // Aseta näkymä ja zoomaustaso
-                kartta.setView([lat, lon], 13); // Voit halutessasi poistaa tämän, jos et halua että kartan näkymä muuttuu
+    // Näytä kartta-elementti ja päivitä sen koko
+    var karttaElementti = document.getElementById('kartta');
+    karttaElementti.style.display = 'block';
+    kartta.invalidateSize();
 
-                // Näytä kartta-elementti ja päivitä sen koko
-                var karttaElementti = document.getElementById('kartta');
-                karttaElementti.style.display = 'block';
-                kartta.invalidateSize();
-
-                // Lisää merkki kartalle ja käytä annettua viestiä
-                L.marker([lat, lon]).addTo(kartta)
-                    .bindPopup(message).openPopup();
-
-
-            } else {
-                alert('Location not found for ' + location);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching location data for ' + location + ':', error);
-        });
+    // Lisää merkki kartalle ja käytä annettua viestiä
+    L.marker([latitude, longitude]).addTo(kartta)
+        .bindPopup(message).openPopup();
 }
+
+// function haeKaupunki(location, message = "You are here") {
+//     var url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(location);
+//     fetch(url)
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data && data.length > 0) {
+//                 var lat = parseFloat(data[0].lat);
+//                 var lon = parseFloat(data[0].lon);
+//
+//                 // Aseta näkymä ja zoomaustaso
+//                 kartta.setView([lat, lon], 13); // Voit halutessasi poistaa tämän, jos et halua että kartan näkymä muuttuu
+//
+//                 // Näytä kartta-elementti ja päivitä sen koko
+//                 var karttaElementti = document.getElementById('kartta');
+//                 karttaElementti.style.display = 'block';
+//                 kartta.invalidateSize();
+//
+//                 // Lisää merkki kartalle ja käytä annettua viestiä
+//                 L.marker([lat, lon]).addTo(kartta)
+//                     .bindPopup(message).openPopup();
+//
+//
+//             } else {
+//                 alert('Location not found for ' + location);
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error fetching location data for ' + location + ':', error);
+//         });
+// }
 
 //Näyttää Pelinalku infot.
 function displayGameInfo() {
@@ -177,14 +191,12 @@ function hideGameInfo() {
 }
 async function fetchFarthestAirport(airportIdent) {
     try {
-        const response = await fetch(`http://localhost:3000/playerdestination?ident=${encodeURIComponent(airportIdent)}`);
-        const data = await response.json();
-        if (data.farthest_airport_ident) {
-            document.getElementById('destination').textContent = data.farthest_airport_ident;
-            setTimeout(() => haeKaupunki(data.farthest_airport_ident, "You need to go here"), 2000);
-
-
-        }
+        // const response = await fetch(`http://localhost:3000/playerdestination?ident=${encodeURIComponent(airportIdent)}`);
+        // const data = await response.json();
+        // if (data.farthest_airport_ident) {
+        //     document.getElementById('destination').textContent = data.farthest_airport_ident;
+        document.getElementById('destination').textContent = destinationICAO.destination_name;
+        setTimeout(() => haeKaupunki(destination_coords.latitude, destination_coords.longitude, "You need to travel here"), 2000);
     } catch (error) {
         console.error('Error fetching farthest airport:', error);
         document.getElementById('destination').textContent = 'Error fetching data';
