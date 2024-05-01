@@ -8,6 +8,7 @@ var foundItems = null;
 let location_coords = null;//viittaa latitudeen location_coords.latitude <--long - samalla tavalla mut .longitude
 let destination_coords = null;//viittaa kuten yllä
 let destinationICAO = null;
+let searchedAirport = false;
 
 //piilottaa alussa "action" nappulat heti.
 document.getElementById('travel').style.display = 'none';
@@ -207,10 +208,16 @@ document.getElementById('search').addEventListener('click', search_button);
 
 async function search_button()
 {
-    console.log(playerName);
-    foundItems = await searchAirport(playerName);
-    alert(`You found ${foundItems.bandage} bandage(s) and ${foundItems.fuel} fuel!`)
-    await display_player_stats()
+    if (searchedAirport === false)
+    {
+        console.log(playerName);
+        foundItems = await searchAirport(playerName);
+        alert(`You found ${foundItems.bandage} bandage(s) and ${foundItems.fuel} fuel!`);
+        await display_player_stats();
+        searchedAirport = true;
+    }
+    else
+        alert("You have already searched this airport.")
 }
 
 async function searchAirport(playerName)
