@@ -193,6 +193,7 @@ async function search_button()
     console.log(playerName);
     foundItems = await searchAirport(playerName);
     alert(`You found ${foundItems.bandage} bandage(s) and ${foundItems.fuel} fuel!`)
+    await display_player_stats()
 }
 
 async function searchAirport(playerName)
@@ -208,16 +209,17 @@ async function searchAirport(playerName)
     }
 }
 
-async function display_player_stats(playerName)
+async function display_player_stats()
 {
-    playerStats = await displayStats(playerName)
+    playerStats = await displayStats();
     const textContainer = document.getElementById("player_stats");
+    textContainer.innerHTML = "";
     let text = document.createTextNode(`LVL: ${playerStats.player_lvl}     EXP: ${playerStats.experience}/${playerStats.max_exp}     HP: ${playerStats.player_health}/${playerStats.max_hp}     BANDAGES: ${playerStats.bandage}     FUEL: ${playerStats.kerosene}`);
     textContainer.appendChild(text);
     show_player_stats()
 }
 
-async function displayStats(playerName) {
+async function displayStats() {
     try {
         const url = `http://localhost:3000/displayStats?name=${encodeURIComponent(playerName)}`;
         const response = await fetch(url);
@@ -281,7 +283,6 @@ function handleTravelConfirm() {
 
 function loadGif(url)
 {
-
     let gifContainer = document.getElementById('gifContainer');
     let img = document.createElement('img');
     img.src = url;
