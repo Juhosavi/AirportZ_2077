@@ -9,11 +9,13 @@ let location_coords = null;//viittaa latitudeen location_coords.latitude <--long
 let destination_coords = null;//viittaa kuten yllä
 let destinationICAO = null;
 let searchedAirport = false;
+let battle_bg = 'img/battle_bg.png';
 
 //piilottaa alussa "action" nappulat heti.
 document.getElementById('travel').style.display = 'none';
 document.getElementById('search').style.display = 'none';
 document.getElementById('bandage').style.display = 'none';
+document.getElementById('destination').style.display = 'none';
 hide_player_stats();
 hide_travel_dropdown();
 
@@ -37,6 +39,7 @@ async function load_game_button() {
             show_action_buttons();
             await display_player_stats(playerName)
             await fetchFarthestAirport(playerData.location);
+            document.getElementById('destination').style.display = 'block';
         } else {
             console.log('Player not found.');
         }
@@ -99,6 +102,7 @@ async function newgame_button () {
                 //näyttää action buttonit
                 show_action_buttons();
                 await fetchFarthestAirport(playerData.location);
+                document.getElementById('destination').style.display = 'block';
                 await display_player_stats(playerName)
 
             } else {
@@ -196,7 +200,7 @@ async function fetchFarthestAirport(airportIdent) {
         // const data = await response.json();
         // if (data.farthest_airport_ident) {
         //     document.getElementById('destination').textContent = data.farthest_airport_ident;
-        document.getElementById('destination').textContent = destinationICAO.destination_name;
+        document.getElementById('destination').textContent = 'Destination: ' + destinationICAO.destination_name;
         setTimeout(() => haeKaupunki(destination_coords.latitude, destination_coords.longitude, "You need to travel here"), 2000);
     } catch (error) {
         console.error('Error fetching farthest airport:', error);
@@ -408,6 +412,7 @@ function handleTravelConfirm() {
 
 function loadGif(url)
 {
+    document.getElementById('destination').style.display = 'none';
     let gifContainer = document.getElementById('gifContainer');
     let img = document.createElement('img');
     img.src = url;
@@ -415,7 +420,19 @@ function loadGif(url)
     let duration = 10000;
     setTimeout(function() {
         gifContainer.removeChild(img);
+        loadBattleBG(battle_bg)
     }, duration);
+}
+
+function loadBattleBG(url) {
+    let bgContainer = document.getElementById('battle_bg');
+    let img = document.createElement('img');
+    bgContainer.style.opacity = '0';
+    img.src = url;
+    bgContainer.appendChild(img);
+    img.onload = function() {
+       bgContainer.style.opacity = '1'; // Change opacity to 1 after image is loaded
+    };
 }
 
 
