@@ -9,7 +9,6 @@ let location_coords = null;//viittaa latitudeen location_coords.latitude <--long
 let destination_coords = null;//viittaa kuten yllä
 let destinationICAO = null;
 let searchedAirport = false;
-let battle_bg = 'img/battle_bg.png';
 
 //piilottaa alussa "action" nappulat heti.
 document.getElementById('travel').style.display = 'none';
@@ -393,9 +392,11 @@ function fill_airport_dropdown(closestAirports)
   });
 }
 
+let selectedAirport = 'null';
+
 document.getElementById("travel_confirm").addEventListener("click", handleTravelConfirm);
 function handleTravelConfirm() {
-    const selectedAirport = document.getElementById("airportSelect").value;
+    selectedAirport = document.getElementById("airportSelect").value;
 
         if (selectedAirport)
         {
@@ -424,7 +425,7 @@ function loadGif(url)
         gifContainer.removeChild(img);
         // loadBattleBG(battle_bg)
         //loadaa battle-sivu! Lähetä tieto uudesta kentästä (ICAO) sekä pelaajan nimi
-        window.location.href = 'battle.html?parameter=' + encodeURIComponent(playerName);
+        window.location.href = 'battle.html?parameter1=' + encodeURIComponent(playerName) + '&parameter2=' + encodeURIComponent(selectedAirport);
     }, duration);
 }
 

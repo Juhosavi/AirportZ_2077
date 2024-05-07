@@ -102,3 +102,17 @@ h1 {
     width: 11.5%;
     height: 3.5%;
 }
+
+#player_stats {
+    /*background-color: black;*/
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+    color: antiquewhite;
+    position: fixed;
+    top: 5rem;
+    left: 0;
+    right: 36rem;
+    margin-top: 0;
+    padding: 10px;
+    white-space: pre;
+}

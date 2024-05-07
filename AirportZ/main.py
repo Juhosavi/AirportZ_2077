@@ -10,6 +10,8 @@ from getCoordinates import get_coordinates_bp
 from getDestination import get_destination_bp
 from useBandage import use_bandage_bp
 from updateHealth import update_health_bp
+from getSelectedAirportICAO import get_selected_airport_icao_bp
+from getEnemyStats import get_enemy_stats_bp
 
 app = Flask(__name__)
 CORS(app, resources={r"/loadPlayer": {"origins": "http://localhost:63342"}})
@@ -22,6 +24,8 @@ CORS(app, resources={r"/getCoordinates": {"origins": "http://localhost:63342"}})
 CORS(app, resources={r"/getDestination": {"origins": "http://localhost:63342"}})
 CORS(app, resources={r"/useBandage": {"origins": "http://localhost:63342"}})
 CORS(app, resources={r"/updateHealth": {"origins": "http://localhost:63342"}})
+CORS(app, resources={r"/getSelectedAirportICAO": {"origins": "http://localhost:63342"}})
+CORS(app, resources={r"/getEnemyStats": {"origins": "http://localhost:63342"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 app.register_blueprint(load_player_bp)
@@ -34,6 +38,8 @@ app.register_blueprint(get_coordinates_bp)
 app.register_blueprint(get_destination_bp)
 app.register_blueprint(use_bandage_bp)
 app.register_blueprint(update_health_bp)
+app.register_blueprint(get_selected_airport_icao_bp)
+app.register_blueprint(get_enemy_stats_bp)
 
 
 if __name__ == '__main__':
