@@ -1,7 +1,11 @@
 import random
 
 from search_db import search_db
+
+
 class Enemy:
+    number = 1 #aseta nollaksi aina battlen päätteeksi (voi olla etten käytä tätä mut onpahan täällä jos käytän)
+
     def __init__(self, level, hp, name, mindmg, maxdmg, exp_per_kill):
         self.level = level
         self.hp = hp
@@ -9,12 +13,11 @@ class Enemy:
         self.maxdmg = maxdmg
         self.name = name
         self.exp_per_kill = exp_per_kill
+        self.number = Enemy.number
+        Enemy.number = Enemy.number + 1
 
-
-
-
-
-
+    def take_damage(self, player_dmg):
+        self.hp = self.hp - player_dmg
 
 
 
