@@ -4,6 +4,7 @@ let enemyAmount = 0;
 let new_icao = null; //'new_airport' <-- icaoon viitataan tolla
 let enemy_stats = null; //'enemy_lvl', 'enemy_hp', 'min_dmg', 'max_dmg', 'exp'
 let player_stats = null;//'player_lvl', 'experience', 'player_health', 'bandage', 'kerosene', 'max_exp', 'max_hp'
+let enemy_list = [];
 
 function hide_enemies()
 {
@@ -24,7 +25,7 @@ function hide_enemies()
 document.addEventListener('DOMContentLoaded', async function()
 {
     hide_enemies();
-    enemyAmount = Math.floor(Math.random() * 4) + 1;
+    enemyAmount = Math.floor(Math.random() * 3) + 1;
     let urlParams = new URLSearchParams(window.location.search);
 
     if (urlParams.has('parameter1') && urlParams.has('parameter2'))
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', async function()
         await get_playerStats();
         await display_player_stats();
         await display_enemies();
+        enemy_list = await get_objects();
 
         console.log('Parameter value:', screen_name, new_location);
         console.log(enemyAmount);
@@ -143,5 +145,35 @@ async function display_enemies()
         document.getElementById('enemy3').style.display = 'block';
         document.getElementById('third_HP_bg').style.display = 'block';
         document.getElementById('third_HP_red').style.display = 'block';
+    }
+}
+
+async function get_objects()
+{
+    const enemyList = [];
+
+    for (let i = 0; i < enemyAmount; i++)
+    {
+        let zombie = new Enemy(i+1, enemy_stats.enemy_lvl, enemy_stats.enemy_hp, enemy_stats.min_dmg, enemy_stats.max_dmg, enemy_stats.exp);
+        enemyList.push(zombie);
+    }
+    return enemyList;
+}
+
+class Enemy
+{
+    constructor(number, lvl, hp, min_dmg, max_dmg, exp)
+    {
+        this.lvl = lvl;
+        this.hp = hp;
+        this.min_dmg = min_dmg;
+        this.max_dmg = max_dmg;
+        this.exp = exp;
+        this.number = number;
+
+    }
+    take_dmg(dmg)
+    {
+        this.hp = this.hp - dmg;
     }
 }
