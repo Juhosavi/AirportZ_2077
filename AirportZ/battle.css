@@ -53,3 +53,52 @@ h1 {
     width: 18%;
 
 }
+
+#first_HP_bg {
+    position: absolute;
+    top: 11rem;
+    right: 34rem;
+    filter: brightness(0%);
+
+}
+
+#second_HP_bg {
+    position: absolute;
+    top: 9rem;
+    right: 22rem;
+    filter: brightness(0%);
+
+}
+
+#third_HP_bg {
+    position: absolute;
+    top: 13rem;
+    right: 10rem;
+    filter: brightness(0%);
+}
+
+#first_HP_red {
+    position: absolute;
+    top: 11rem;
+    left: 50.9rem;
+    width: 11.5%;
+    height: 3.5%;
+
+}
+
+#second_HP_red {
+    position: absolute;
+    top: 9rem;
+    left: 62.9rem;
+    width: 11.5%;
+    height: 3.5%;
+
+}
+
+#third_HP_red {
+    position: absolute;
+    top: 13rem;
+    left: 74.9rem;
+    width: 11.5%;
+    height: 3.5%;
+}

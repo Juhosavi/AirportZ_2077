@@ -424,6 +424,7 @@ function loadGif(url)
         gifContainer.removeChild(img);
         // loadBattleBG(battle_bg)
         //loadaa battle-sivu! Lähetä tieto uudesta kentästä (ICAO) sekä pelaajan nimi
+        window.location.href = 'battle.html?parameter=' + encodeURIComponent(playerName);
     }, duration);
 }
 
