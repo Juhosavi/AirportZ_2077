@@ -16,8 +16,10 @@ document.getElementById('travel').style.display = 'none';
 document.getElementById('search').style.display = 'none';
 document.getElementById('bandage').style.display = 'none';
 document.getElementById('destination').style.display = 'none';
+
 hide_player_stats();
 hide_travel_dropdown();
+
 
 //LOAD GAME "nappula" kuuntelija clickkauksesta
 document.getElementById('loadgame').addEventListener('click', load_game_button)
@@ -420,19 +422,9 @@ function loadGif(url)
     let duration = 10000;
     setTimeout(function() {
         gifContainer.removeChild(img);
-        loadBattleBG(battle_bg)
+        // loadBattleBG(battle_bg)
+        //loadaa battle-sivu! Lähetä tieto uudesta kentästä (ICAO) sekä pelaajan nimi
     }, duration);
-}
-
-function loadBattleBG(url) {
-    let bgContainer = document.getElementById('battle_bg');
-    let img = document.createElement('img');
-    bgContainer.style.opacity = '0';
-    img.src = url;
-    bgContainer.appendChild(img);
-    img.onload = function() {
-       bgContainer.style.opacity = '1'; // Change opacity to 1 after image is loaded
-    };
 }
 
 
