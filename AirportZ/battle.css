@@ -23,9 +23,9 @@ h1 {
 #player_char{
     position: absolute;
     top: 15rem;
-    right: 50rem;
+    right: 57rem;
     height: 50%;
-    width: 30%;
+    width: 19%;
 
 }
 
@@ -125,4 +125,28 @@ h1 {
 }
 .clickable3:hover {
     cursor: url('img/attack_cursor.png'), auto;
+}
+
+h2{
+    font-size: 1.5rem;
+    font-family: 'Press Start 2P', cursive;
+    text-align: right;
+    color: antiquewhite;
+    position: fixed;
+    top: 44rem;
+    left: 0;
+    right: 43rem;
+    margin-top: 0;
+    padding: 10px;
+    animation: blink 2s linear infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.clickPlayer:hover {
+    cursor: url('img/heal_cursor.png'), auto;
 }

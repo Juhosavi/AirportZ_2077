@@ -1,3 +1,5 @@
+'use strict'
+
 let screen_name = null;
 let new_location = null;
 let enemyAmount = 0;
@@ -42,11 +44,12 @@ document.addEventListener('DOMContentLoaded', async function()
         await get_new_icao();
         await get_enemyStats();
         await get_playerStats();
-        await display_player_stats();
+        display_player_stats();
         await get_player_dmg();
         await display_enemies();
         enemy_list = await get_objects();
         add_enemy_listeners();
+        playerTurnText();
         console.log(enemy_list[0].hp)
 
         console.log('Parameter value:', screen_name, new_location);
@@ -133,7 +136,7 @@ async function getPlayerDmg()
     }
 }
 
-async function display_player_stats()
+function display_player_stats()
 {
     const textContainer = document.getElementById("player_stats");
     textContainer.innerHTML = "";
@@ -207,6 +210,9 @@ class Enemy
 
 function add_enemy_listeners()
 {
+    document.querySelectorAll('.clickPlayer').forEach(function(img) {
+    img.addEventListener('click', playerHeal);
+});
     document.querySelectorAll('.clickable1').forEach(function(img) {
     img.addEventListener('click', handleClick1);
 });
@@ -218,6 +224,44 @@ document.querySelectorAll('.clickable2').forEach(function(img) {
 document.querySelectorAll('.clickable3').forEach(function(img) {
     img.addEventListener('click', handleClick3);
 });
+}
+
+function playerHeal(event)
+{
+    if (event.target.classList.contains('clickPlayer'))
+    {
+        if (player_stats.bandage > 0)
+            if (player_stats.player_health < player_stats.max_hp)
+                if (player_stats.player_health > 50 && player_stats.max_hp === 100)
+                {
+                    player_stats.player_health = 100;
+                    player_stats.bandage = player_stats.bandage - 1;
+                }
+                else if (player_stats.player_health > 100 && player_stats.max_hp === 150)
+                {
+                    player_stats.player_health = 150;
+                    player_stats.bandage = player_stats.bandage - 1;
+                }
+                else if (player_stats.player_health > 150 && player_stats.max_hp === 200)
+                {
+                    player_stats.player_health = 200;
+                    player_stats.bandage = player_stats.bandage - 1;
+                }
+                else
+                {
+                    player_stats.player_health = player_stats.player_health + 50;
+                    player_stats.bandage = player_stats.bandage - 1;
+                }
+            else
+            {
+                alert("Your health is already full.")
+            }
+        else
+        {
+            alert("You have no bandages!");
+        }
+    }
+    display_player_stats();
 }
 
 function handleClick1(event) {
@@ -296,4 +340,20 @@ function handleClick3(event) {
         // Handle click for other images (if needed)
         console.log('Regular image clicked!');
     }
+}
+
+async function player_take_dmg()
+{
+    let damage = Math.floor(Math.random() * (enemy_stats.max_dmg - enemy_stats.min_dmg + 1)) + enemy_stats.min_dmg;
+    player_stats.player_health = player_stats.player_health - damage;
+    display_player_stats();
+}
+
+function playerTurnText() {
+    document.getElementById("blinkingText").innerText = "Your turn!";
+}
+
+function enemyTurnText()
+{
+    document.getElementById("blinkingText").innerText = "Enemy turn!";
 }
