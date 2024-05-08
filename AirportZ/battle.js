@@ -19,6 +19,7 @@ let player_takes_dmg = null;
 
 document.getElementById("blinkingText2").style.display = 'none';
 document.getElementById("blinkingText").style.display = 'none';
+document.getElementById("death").style.display = 'none';
 
 function hide_enemies()
 {
@@ -387,6 +388,10 @@ async function player_take_dmg()
             player_takes_dmg = Math.floor(Math.random() * (enemy_stats.max_dmg - enemy_stats.min_dmg + 1)) + enemy_stats.min_dmg;
             alert(`Zombie ${i+1} hits you for ${player_takes_dmg} points!`)
             player_stats.player_health = player_stats.player_health - player_takes_dmg;
+            if (player_stats.player_health <= 0)
+            {
+                player_dies();
+            }
             display_player_stats();
             add_enemy_listeners();
         }, duration);
@@ -409,5 +414,12 @@ async function enemyTurnText()
 
 function player_dies()
 {
+    hide_enemies();
+    document.getElementById("death").style.display = 'block';
+    let duration = 4000;
+    setTimeout(function()
+        {
+            window.location.href = 'main.html';
+        }, duration);
 
 }
