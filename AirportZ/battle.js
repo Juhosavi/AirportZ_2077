@@ -310,7 +310,11 @@ async function handleClick1(event) {
             enemyAmount = enemyAmount - 1;
             first_red.style.display = 'none';
             document.getElementById('enemy1').style.display = 'none';
-        document.getElementById('first_HP_bg').style.display = 'none';
+            document.getElementById('first_HP_bg').style.display = 'none';
+            if (enemyAmount === 0)
+            {
+                await victory();
+            }
         }
         else {
             first_red.style.width = `${width1}%`;
@@ -321,7 +325,14 @@ async function handleClick1(event) {
         // Handle click for other images (if needed)
         console.log('Regular image clicked!');
     }
-    await remove_enemy_listeners();
+    if (enemyAmount !== 0)
+    {
+        await remove_enemy_listeners();
+    }
+    else
+    {
+        document.getElementById("blinkingText").style.display = 'none';
+    }
 }
 
 async function handleClick2(event) {
@@ -337,6 +348,10 @@ async function handleClick2(event) {
             second_red.style.display = 'none';
             document.getElementById('enemy2').style.display = 'none';
             document.getElementById('second_HP_bg').style.display = 'none';
+            if (enemyAmount === 0)
+            {
+                await victory();
+            }
         }
         else {
             second_red.style.width = `${width2}%`;
@@ -347,7 +362,14 @@ async function handleClick2(event) {
         // Handle click for other images (if needed)
         console.log('Regular image clicked!');
     }
-    await remove_enemy_listeners();
+    if (enemyAmount !== 0)
+    {
+        await remove_enemy_listeners();
+    }
+    else
+    {
+        document.getElementById("blinkingText").style.display = 'none';
+    }
 }
 
 async function handleClick3(event) {
@@ -364,6 +386,10 @@ async function handleClick3(event) {
             third_red.style.display = 'none';
             document.getElementById('enemy3').style.display = 'none';
             document.getElementById('third_HP_bg').style.display = 'none';
+            if (enemyAmount === 0)
+            {
+                await victory();
+            }
         }
         else {
             third_red.style.width = `${width3}%`;
@@ -374,7 +400,14 @@ async function handleClick3(event) {
         // Handle click for other images (if needed)
         console.log('Regular image clicked!');
     }
-    await remove_enemy_listeners();
+    if (enemyAmount !== 0)
+    {
+        await remove_enemy_listeners();
+    }
+    else
+    {
+        document.getElementById("blinkingText").style.display = 'none';
+    }
 }
 
 
@@ -421,5 +454,10 @@ function player_dies()
         {
             window.location.href = 'main.html';
         }, duration);
+}
 
+async function victory()
+{
+    console.log("you win!")
+    document.getElementById("blinkingText2").style.display = 'none';
 }
