@@ -117,6 +117,12 @@ h1 {
     white-space: pre;
 }
 
-.clickable:hover {
+.clickable1:hover {
+    cursor: url('img/attack_cursor.png'), auto;
+}
+.clickable2:hover {
+    cursor: url('img/attack_cursor.png'), auto;
+}
+.clickable3:hover {
     cursor: url('img/attack_cursor.png'), auto;
 }

@@ -5,6 +5,13 @@ let new_icao = null; //'new_airport' <-- icaoon viitataan tolla
 let enemy_stats = null; //'enemy_lvl', 'enemy_hp', 'min_dmg', 'max_dmg', 'exp'
 let player_stats = null;//'player_lvl', 'experience', 'player_health', 'bandage', 'kerosene', 'max_exp', 'max_hp'
 let enemy_list = [];
+let player_dmg = null;//min_dmg, max_dmg
+const first_red = document.getElementById("first_HP_red");
+const second_red = document.getElementById("second_HP_red");
+const third_red = document.getElementById("third_HP_red");
+let width1 = 11.5;
+let width2 = 11.5;
+let width3 = 11.5;
 
 function hide_enemies()
 {
@@ -36,8 +43,10 @@ document.addEventListener('DOMContentLoaded', async function()
         await get_enemyStats();
         await get_playerStats();
         await display_player_stats();
+        await get_player_dmg();
         await display_enemies();
         enemy_list = await get_objects();
+        add_enemy_listeners();
         console.log(enemy_list[0].hp)
 
         console.log('Parameter value:', screen_name, new_location);
@@ -98,6 +107,23 @@ async function getPlayer()
 {
     try {
         const url = `http://localhost:3000/displayStats?name=${encodeURIComponent(screen_name)}`;
+        const response = await fetch(url);
+        const jsonPlayer = await response.json();
+
+        return jsonPlayer;
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+async function get_player_dmg()
+{
+    player_dmg = await getPlayerDmg();
+}
+async function getPlayerDmg()
+{
+    try {
+        const url = `http://localhost:3000/getPlayerDmg?name=${encodeURIComponent(player_stats.player_lvl)}`;
         const response = await fetch(url);
         const jsonPlayer = await response.json();
 
@@ -176,5 +202,98 @@ class Enemy
     take_dmg(dmg)
     {
         this.hp = this.hp - dmg;
+    }
+}
+
+function add_enemy_listeners()
+{
+    document.querySelectorAll('.clickable1').forEach(function(img) {
+    img.addEventListener('click', handleClick1);
+});
+
+document.querySelectorAll('.clickable2').forEach(function(img) {
+    img.addEventListener('click', handleClick2);
+});
+
+document.querySelectorAll('.clickable3').forEach(function(img) {
+    img.addEventListener('click', handleClick3);
+});
+}
+
+function handleClick1(event) {
+    // Check if the clicked image has the "special-image" class
+    if (event.target.classList.contains('clickable1')) {
+        // Add your custom click behavior here
+        console.log('Special image 1 clicked!');
+        let damage = Math.floor(Math.random() * (player_dmg.max_dmg - player_dmg.min_dmg + 1)) + player_dmg.min_dmg;
+        console.log(`dmg ${damage}`);
+        console.log(`hp ${enemy_list[0].hp}`);
+        width1 = width1 - (width1 * (damage / enemy_list[0].hp));
+        enemy_list[0].take_dmg(damage);
+        if (width1 <= 0) {
+            first_red.style.display = 'none';
+            document.getElementById('enemy1').style.display = 'none';
+        document.getElementById('first_HP_bg').style.display = 'none';
+        }
+        else {
+            first_red.style.width = `${width1}%`;
+        }
+
+        console.log(`new hp ${enemy_list[0].hp}`)
+
+    } else {
+        // Handle click for other images (if needed)
+        console.log('Regular image clicked!');
+    }
+}
+
+function handleClick2(event) {
+    if (event.target.classList.contains('clickable2')) {
+        console.log('Special image 2 clicked!');
+        let damage = Math.floor(Math.random() * (player_dmg.max_dmg - player_dmg.min_dmg + 1)) + player_dmg.min_dmg;
+        console.log(`dmg ${damage}`);
+        console.log(`hp ${enemy_list[1].hp}`);
+        width2 = width2 - (width2 * (damage / enemy_list[1].hp));
+        enemy_list[1].take_dmg(damage);
+        if (width2 <= 0) {
+            second_red.style.display = 'none';
+            document.getElementById('enemy2').style.display = 'none';
+            document.getElementById('second_HP_bg').style.display = 'none';
+        }
+        else {
+            second_red.style.width = `${width2}%`;
+        }
+
+        console.log(`new hp ${enemy_list[1].hp}`)
+
+    } else {
+        // Handle click for other images (if needed)
+        console.log('Regular image clicked!');
+    }
+}
+
+function handleClick3(event) {
+    // Check if the clicked image has the "special-image" class
+    if (event.target.classList.contains('clickable3')) {
+        console.log('Special image 3 clicked!');
+        let damage = Math.floor(Math.random() * (player_dmg.max_dmg - player_dmg.min_dmg + 1)) + player_dmg.min_dmg;
+        console.log(`dmg ${damage}`);
+        console.log(`hp ${enemy_list[2].hp}`);
+        width3 = width3 - (width3 * (damage / enemy_list[2].hp));
+        enemy_list[2].take_dmg(damage);
+        if (width3 <= 0) {
+            third_red.style.display = 'none';
+            document.getElementById('enemy3').style.display = 'none';
+            document.getElementById('third_HP_bg').style.display = 'none';
+        }
+        else {
+            third_red.style.width = `${width3}%`;
+        }
+
+        console.log(`new hp ${enemy_list[2].hp}`)
+
+    } else {
+        // Handle click for other images (if needed)
+        console.log('Regular image clicked!');
     }
 }
