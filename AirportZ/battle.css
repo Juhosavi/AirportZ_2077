@@ -116,3 +116,7 @@ h1 {
     padding: 10px;
     white-space: pre;
 }
+
+.clickable:hover {
+    cursor: url('img/attack_cursor.png'), auto;
+}

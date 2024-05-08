@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', async function()
         await display_player_stats();
         await display_enemies();
         enemy_list = await get_objects();
+        console.log(enemy_list[0].hp)
 
         console.log('Parameter value:', screen_name, new_location);
         console.log(enemyAmount);
