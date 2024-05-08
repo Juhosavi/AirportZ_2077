@@ -14,6 +14,11 @@ const third_red = document.getElementById("third_HP_red");
 let width1 = 11.5;
 let width2 = 11.5;
 let width3 = 11.5;
+// let player_turn = true;
+let player_takes_dmg = null;
+
+document.getElementById("blinkingText2").style.display = 'none';
+document.getElementById("blinkingText").style.display = 'none';
 
 function hide_enemies()
 {
@@ -44,16 +49,15 @@ document.addEventListener('DOMContentLoaded', async function()
         await get_new_icao();
         await get_enemyStats();
         await get_playerStats();
-        display_player_stats();
+        await display_player_stats();
         await get_player_dmg();
         await display_enemies();
         enemy_list = await get_objects();
-        add_enemy_listeners();
-        playerTurnText();
-        console.log(enemy_list[0].hp)
-
-        console.log('Parameter value:', screen_name, new_location);
-        console.log(enemyAmount);
+        await add_enemy_listeners();
+        // console.log(enemy_list[0].hp)
+        //
+        // console.log('Parameter value:', screen_name, new_location);
+        // console.log(enemyAmount);
 
     }
     else
@@ -65,7 +69,7 @@ document.addEventListener('DOMContentLoaded', async function()
 async function get_new_icao()
 {
     new_icao = await getICAO();
-    console.log(new_icao.new_airport);
+    // console.log(new_icao.new_airport);
 }
 
 async function getICAO()
@@ -84,7 +88,7 @@ async function getICAO()
 async function get_enemyStats()
 {
     enemy_stats = await getEnemy();
-    console.log(enemy_stats.enemy_lvl);
+    // console.log(enemy_stats.enemy_lvl);
 }
 
 async function getEnemy()
@@ -136,7 +140,7 @@ async function getPlayerDmg()
     }
 }
 
-function display_player_stats()
+async function display_player_stats()
 {
     const textContainer = document.getElementById("player_stats");
     textContainer.innerHTML = "";
@@ -208,25 +212,47 @@ class Enemy
     }
 }
 
-function add_enemy_listeners()
+async function add_enemy_listeners()
 {
-    document.querySelectorAll('.clickPlayer').forEach(function(img) {
-    img.addEventListener('click', playerHeal);
-});
-    document.querySelectorAll('.clickable1').forEach(function(img) {
-    img.addEventListener('click', handleClick1);
-});
+    await playerTurnText();
+    console.log("adding listeners")
+    document.querySelectorAll('.clickPlayer').forEach(function (img) {
+        img.addEventListener('click', playerHeal);
+    });
+    document.querySelectorAll('.clickable1').forEach(function (img) {
+        img.addEventListener('click', handleClick1);
+    });
 
-document.querySelectorAll('.clickable2').forEach(function(img) {
-    img.addEventListener('click', handleClick2);
-});
+    document.querySelectorAll('.clickable2').forEach(function (img) {
+        img.addEventListener('click', handleClick2);
+    });
 
-document.querySelectorAll('.clickable3').forEach(function(img) {
-    img.addEventListener('click', handleClick3);
-});
+    document.querySelectorAll('.clickable3').forEach(function (img) {
+        img.addEventListener('click', handleClick3);
+    });
 }
 
-function playerHeal(event)
+async function remove_enemy_listeners(){
+
+    await enemyTurnText();
+    document.querySelectorAll('.clickPlayer').forEach(function (img) {
+        img.removeEventListener('click', playerHeal);
+    });
+    document.querySelectorAll('.clickable1').forEach(function (img) {
+        img.removeEventListener('click', handleClick1);
+    });
+    document.querySelectorAll('.clickable2').forEach(function (img) {
+        img.removeEventListener('click', handleClick2);
+    });
+    document.querySelectorAll('.clickable3').forEach(function (img) {
+        img.removeEventListener('click', handleClick3);
+    });
+    await player_take_dmg();
+
+}
+
+
+async function playerHeal(event)
 {
     if (event.target.classList.contains('clickPlayer'))
     {
@@ -261,10 +287,11 @@ function playerHeal(event)
             alert("You have no bandages!");
         }
     }
-    display_player_stats();
+    await display_player_stats();
+    await remove_enemy_listeners();
 }
 
-function handleClick1(event) {
+async function handleClick1(event) {
     // Check if the clicked image has the "special-image" class
     if (event.target.classList.contains('clickable1')) {
         // Add your custom click behavior here
@@ -275,6 +302,7 @@ function handleClick1(event) {
         width1 = width1 - (width1 * (damage / enemy_list[0].hp));
         enemy_list[0].take_dmg(damage);
         if (width1 <= 0) {
+            enemyAmount = enemyAmount - 1;
             first_red.style.display = 'none';
             document.getElementById('enemy1').style.display = 'none';
         document.getElementById('first_HP_bg').style.display = 'none';
@@ -282,16 +310,16 @@ function handleClick1(event) {
         else {
             first_red.style.width = `${width1}%`;
         }
-
-        console.log(`new hp ${enemy_list[0].hp}`)
+        console.log(`new hp ${enemy_list[0].hp}`);
 
     } else {
         // Handle click for other images (if needed)
         console.log('Regular image clicked!');
     }
+    await remove_enemy_listeners();
 }
 
-function handleClick2(event) {
+async function handleClick2(event) {
     if (event.target.classList.contains('clickable2')) {
         console.log('Special image 2 clicked!');
         let damage = Math.floor(Math.random() * (player_dmg.max_dmg - player_dmg.min_dmg + 1)) + player_dmg.min_dmg;
@@ -300,6 +328,7 @@ function handleClick2(event) {
         width2 = width2 - (width2 * (damage / enemy_list[1].hp));
         enemy_list[1].take_dmg(damage);
         if (width2 <= 0) {
+            enemyAmount = enemyAmount - 1;
             second_red.style.display = 'none';
             document.getElementById('enemy2').style.display = 'none';
             document.getElementById('second_HP_bg').style.display = 'none';
@@ -307,16 +336,16 @@ function handleClick2(event) {
         else {
             second_red.style.width = `${width2}%`;
         }
-
         console.log(`new hp ${enemy_list[1].hp}`)
 
     } else {
         // Handle click for other images (if needed)
         console.log('Regular image clicked!');
     }
+    await remove_enemy_listeners();
 }
 
-function handleClick3(event) {
+async function handleClick3(event) {
     // Check if the clicked image has the "special-image" class
     if (event.target.classList.contains('clickable3')) {
         console.log('Special image 3 clicked!');
@@ -326,6 +355,7 @@ function handleClick3(event) {
         width3 = width3 - (width3 * (damage / enemy_list[2].hp));
         enemy_list[2].take_dmg(damage);
         if (width3 <= 0) {
+            enemyAmount = enemyAmount - 1;
             third_red.style.display = 'none';
             document.getElementById('enemy3').style.display = 'none';
             document.getElementById('third_HP_bg').style.display = 'none';
@@ -333,27 +363,47 @@ function handleClick3(event) {
         else {
             third_red.style.width = `${width3}%`;
         }
-
-        console.log(`new hp ${enemy_list[2].hp}`)
+        console.log(`new hp ${enemy_list[2].hp}`);
 
     } else {
         // Handle click for other images (if needed)
         console.log('Regular image clicked!');
     }
+    await remove_enemy_listeners();
 }
+
 
 async function player_take_dmg()
 {
-    let damage = Math.floor(Math.random() * (enemy_stats.max_dmg - enemy_stats.min_dmg + 1)) + enemy_stats.min_dmg;
-    player_stats.player_health = player_stats.player_health - damage;
-    display_player_stats();
+    let duration = 2000;
+    for (let i = 0; i < enemyAmount; i++)
+    {
+        setTimeout(function()
+        {
+            player_takes_dmg = Math.floor(Math.random() * (enemy_stats.max_dmg - enemy_stats.min_dmg + 1)) + enemy_stats.min_dmg;
+            alert(`Zombie ${i+1} hits you for ${player_takes_dmg} points!`)
+            player_stats.player_health = player_stats.player_health - player_takes_dmg;
+            display_player_stats();
+            add_enemy_listeners();
+        }, duration);
+    }
+    // await add_enemy_listeners();
 }
 
-function playerTurnText() {
-    document.getElementById("blinkingText").innerText = "Your turn!";
+async function playerTurnText() {
+    console.log("kutsuttiin enemyturntext")
+    document.getElementById("blinkingText").style.display = 'block';
+    document.getElementById("blinkingText2").style.display = 'none';
 }
 
-function enemyTurnText()
+async function enemyTurnText()
 {
-    document.getElementById("blinkingText").innerText = "Enemy turn!";
+    console.log("kutsuttiin enemyturntext")
+    document.getElementById("blinkingText2").style.display = 'block';
+    document.getElementById("blinkingText").style.display = 'none';
+}
+
+function player_dies()
+{
+
 }
