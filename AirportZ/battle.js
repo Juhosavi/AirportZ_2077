@@ -262,21 +262,25 @@ async function playerHeal(event)
                 {
                     player_stats.player_health = 100;
                     player_stats.bandage = player_stats.bandage - 1;
+                    alert(`You used a bandage! Your health is now ${player_stats.player_health}`)
                 }
                 else if (player_stats.player_health > 100 && player_stats.max_hp === 150)
                 {
                     player_stats.player_health = 150;
                     player_stats.bandage = player_stats.bandage - 1;
+                    alert(`You used a bandage! Your health is now ${player_stats.player_health}`)
                 }
                 else if (player_stats.player_health > 150 && player_stats.max_hp === 200)
                 {
                     player_stats.player_health = 200;
                     player_stats.bandage = player_stats.bandage - 1;
+                    alert(`You used a bandage! Your health is now ${player_stats.player_health}`)
                 }
                 else
                 {
                     player_stats.player_health = player_stats.player_health + 50;
                     player_stats.bandage = player_stats.bandage - 1;
+                    alert(`You used a bandage! Your health is now ${player_stats.player_health}`)
                 }
             else
             {
