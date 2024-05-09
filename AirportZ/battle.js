@@ -145,7 +145,7 @@ async function display_player_stats()
 {
     const textContainer = document.getElementById("player_stats");
     textContainer.innerHTML = "";
-    let text = document.createTextNode(`LVL: ${player_stats.player_lvl}   HP: ${player_stats.player_health}/${player_stats.max_hp}   BANDAGES: ${player_stats.bandage}`);
+    let text = document.createTextNode(`LVL: ${player_stats.player_lvl}   HP: ${player_stats.player_health}/${player_stats.max_hp}   BANDAGES: ${player_stats.bandage}                  ENEMY LVL: ${enemy_stats.enemy_lvl}`);
     textContainer.appendChild(text);
 }
 
@@ -465,6 +465,7 @@ async function victory()
     document.getElementById("blinkingText2").style.display = 'none';
     player_stats.experience = player_stats.experience + exp_earned;
 
+    win_battle_text();
     if (player_stats.max_exp === 10 && player_stats.experience >= 10)
     {
         player_stats.player_lvl = 2;
@@ -475,8 +476,7 @@ async function victory()
         player_stats.player_lvl = 3;
         alert(`You leveled up! Your level is now ${player_stats.player_lvl}`)
     }
-    //updatee tiedot databaseen
-    //joku victory gz
+
     await battle_victory()
     let duration = 3000;
     setTimeout(function()
@@ -507,4 +507,12 @@ async function battleVictory()
     } catch (error) {
         console.log(error.message);
     }
+}
+
+async function win_battle_text()
+{
+    let text = `You won the battle!`;
+    text = text.replace(/\n/g, "<br>");
+    document.getElementById('battle_win').innerHTML = text;
+
 }
