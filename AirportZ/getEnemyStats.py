@@ -15,7 +15,7 @@ def get_enemy_stats():
         'enemy_hp': enemy_hp,
         'min_dmg': min_dmg,
         'max_dmg': max_dmg,
-        'exp': exp
+        'exper': exp
     }
     return jsonify(enemy_stats), 200
 

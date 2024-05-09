@@ -4,7 +4,7 @@ let screen_name = null;
 let new_location = null;
 let enemyAmount = 0;
 let new_icao = null; //'new_airport' <-- icaoon viitataan tolla
-let enemy_stats = null; //'enemy_lvl', 'enemy_hp', 'min_dmg', 'max_dmg', 'exp'
+let enemy_stats = null; //'enemy_lvl', 'enemy_hp', 'min_dmg', 'max_dmg', 'exper'
 let player_stats = null;//'player_lvl', 'experience', 'player_health', 'bandage', 'kerosene', 'max_exp', 'max_hp'
 let enemy_list = [];
 let player_dmg = null;//min_dmg, max_dmg
@@ -16,6 +16,7 @@ let width2 = 11.5;
 let width3 = 11.5;
 // let player_turn = true;
 let player_takes_dmg = null;
+let exp_earned = null;
 
 document.getElementById("blinkingText2").style.display = 'none';
 document.getElementById("blinkingText").style.display = 'none';
@@ -311,6 +312,7 @@ async function handleClick1(event) {
             first_red.style.display = 'none';
             document.getElementById('enemy1').style.display = 'none';
             document.getElementById('first_HP_bg').style.display = 'none';
+            exp_earned = exp_earned + enemy_stats.exper;
             if (enemyAmount === 0)
             {
                 await victory();
@@ -348,6 +350,7 @@ async function handleClick2(event) {
             second_red.style.display = 'none';
             document.getElementById('enemy2').style.display = 'none';
             document.getElementById('second_HP_bg').style.display = 'none';
+            exp_earned = exp_earned + enemy_stats.exper;
             if (enemyAmount === 0)
             {
                 await victory();
@@ -386,6 +389,7 @@ async function handleClick3(event) {
             third_red.style.display = 'none';
             document.getElementById('enemy3').style.display = 'none';
             document.getElementById('third_HP_bg').style.display = 'none';
+            exp_earned = exp_earned + enemy_stats.exper;
             if (enemyAmount === 0)
             {
                 await victory();
@@ -433,7 +437,7 @@ async function player_take_dmg()
 }
 
 async function playerTurnText() {
-    console.log("kutsuttiin enemyturntext")
+    console.log("kutsuttiin playerturntext")
     document.getElementById("blinkingText").style.display = 'block';
     document.getElementById("blinkingText2").style.display = 'none';
 }
@@ -460,5 +464,42 @@ async function victory()
 {
     console.log("you win!")
     document.getElementById("blinkingText2").style.display = 'none';
-    window.location.href = 'travel.html?parameter1=' + encodeURIComponent(screen_name);
+    player_stats.experience = player_stats.experience + exp_earned;
+
+    if (player_stats.max_exp === 10 && player_stats.experience >= 10)
+    {
+        player_stats.player_lvl = 2;
+        alert(`You leveled up! Your level is now ${player_stats.player_lvl}`)
+    }
+    else if (player_stats.max_exp === 20 && player_stats.experience >= 20)
+    {
+        player_stats.player_lvl = 3;
+        alert(`You leveled up! Your level is now ${player_stats.player_lvl}`)
+    }
+    //updatee tiedot databaseen
+    //joku victory gz
+    await battle_victory()
+    let duration = 3000;
+    setTimeout(function()
+    {
+        window.location.href = 'travel.html?parameter1=' + encodeURIComponent(screen_name);
+    }, duration);
+}
+
+async function battle_victory()
+{
+    let test = await battleVictory();
+    console.log(`${test.affirm}`);
+}
+async function battleVictory()
+{
+    try {
+        const url = `http://localhost:3000/battleVictory?name=${encodeURIComponent(screen_name)}&new_location=${encodeURIComponent(new_icao.new_airport)}&experience=${encodeURIComponent(player_stats.experience)}&player_hp=${encodeURIComponent(player_stats.player_health)}&bandage=${encodeURIComponent(player_stats.bandage)}&player_lvl=${encodeURIComponent(player_stats.player_lvl)}`;
+        const response = await fetch(url);
+        const jsonPlayer = await response.json();
+
+        return jsonPlayer;
+    } catch (error) {
+        console.log(error.message);
+    }
 }
