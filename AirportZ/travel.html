@@ -3,15 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Airport Z</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="travel.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js" defer></script>
-    <script src="scripts.js" defer></script>
+    <script src="travel.js" defer></script>
 </head>
 <body>
 <h1>Airport Z</h1>
-    <button id="newgame">New Game</button>
-    <button id="loadgame">Load Game</button>
+<h2><span id="destination"></span></h2>
+    <div id="player_stats"></div>
+    <button id="search">Search Airport</button>
+    <button id ="travel">Travel</button>
+    <button id ="bandage">Use bandage</button>
+    <div id="kartta"></div>
+    <label for="airportSelect"></label><select id="airportSelect">
+    <option value="">Select a city</option>
+    </select>
+    <button id="travel_confirm">Confirm</button>
+    <div id="gifContainer"></div>
     <div id="gameInfo">
         The world is not what it used to be. A virus has infected most of the population, turning people into zombies.
         At your destination airport there is rumored to be a vaccine.

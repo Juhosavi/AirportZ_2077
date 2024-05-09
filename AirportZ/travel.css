@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+h1 {
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+    color: crimson;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-top: 0;
+    padding: 10px;
+}
+h2{
+    font-size: 1rem;
+    font-family: 'Press Start 2P', cursive;
+    text-align: right;
+    color: crimson;
+    position: fixed;
+    top: 40rem;
+    left: 0;
+    right: 16rem;
+    margin-top: 0;
+    padding: 10px;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url('img/airportz.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #c61a2f;
+    color: white;
+}
+
+button:hover {
+    background-color: #8e1434;
+}
+#kartta {
+    width: 600px;  /* määritellään leveys */
+    height: 450px; /* ja korkeus täällä */
+    display: none;
+    position: absolute;
+    top: 10rem;
+    right: 12rem;
+    filter: grayscale(50%);
+}
+
+#gameInfo {
+    display: none;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    padding: 20px;
+    background: rgba(0,0,0,0.8);
+    border-radius: 10px;
+    width: 80%;
+}
+#bandage{
+    position: absolute;
+    top: 25rem;
+    left: 25rem;
+}
+#search{
+    position: absolute;
+    top: 15rem;
+    left: 25rem;
+}
+#travel{
+    position: absolute;
+    top: 20rem;
+    left: 25rem;
+}
+#player_stats{
+    background-color: black;
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+    color: antiquewhite;
+    position: fixed;
+    top: 4rem;
+    left: 0;
+    right: 0;
+    margin-top: 0;
+    padding: 10px;
+    white-space: pre;
+}
+
+#airportSelect{
+    display: none;
+    text-align: center;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    color: white;
+    padding: 20px;
+    background: rgba(0,0,0,0.8);
+    border-radius: 10px;
+    width: 20%;
+}
+
+#travel_confirm{
+    display: none;
+    text-align: center;
+    position: absolute;
+    top: 40%;
+    left: 26%;
+}
+
+#gifContainer {
+    filter: grayscale(80%);
+    position: absolute;
+    top: 10rem;
+    right: 12rem;
+}
+
+#battle_bg {
+
+}

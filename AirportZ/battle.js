@@ -460,4 +460,5 @@ async function victory()
 {
     console.log("you win!")
     document.getElementById("blinkingText2").style.display = 'none';
+    window.location.href = 'travel.html?parameter1=' + encodeURIComponent(screen_name);
 }
