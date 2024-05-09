@@ -14,6 +14,7 @@ from getSelectedAirportICAO import get_selected_airport_icao_bp
 from getEnemyStats import get_enemy_stats_bp
 from getPlayerDmg import get_player_dmg_bp
 from battleVictory import battle_victory_bp
+from getAirportLevels import get_airport_levels_bp
 
 app = Flask(__name__)
 CORS(app, resources={r"/loadPlayer": {"origins": "http://localhost:63342"}})
@@ -30,6 +31,7 @@ CORS(app, resources={r"/getSelectedAirportICAO": {"origins": "http://localhost:6
 CORS(app, resources={r"/getEnemyStats": {"origins": "http://localhost:63342"}})
 CORS(app, resources={r"/getPlayerDmg": {"origins": "http://localhost:63342"}})
 CORS(app, resources={r"/battleVictory": {"origins": "http://localhost:63342"}})
+CORS(app, resources={r"/getAirportLevels": {"origins": "http://localhost:63342"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 app.register_blueprint(load_player_bp)
@@ -46,6 +48,7 @@ app.register_blueprint(get_selected_airport_icao_bp)
 app.register_blueprint(get_enemy_stats_bp)
 app.register_blueprint(get_player_dmg_bp)
 app.register_blueprint(battle_victory_bp)
+app.register_blueprint(get_airport_levels_bp)
 
 
 if __name__ == '__main__':

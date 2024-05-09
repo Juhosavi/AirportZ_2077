@@ -37,20 +37,6 @@ def get_airport_list(airports_dict):
 
     return airport_list2
 
-# def get_airports_coords(airports_dict):
-#     coords_dict = {}
-#     latitudes = []
-#     longitudes = []
-#     for i in range(0, 6):
-#         latitudes.append(search_db(f"SELECT latitude_deg FROM airport WHERE airport.name = '{airports_dict[i][1]}'")[0][0])
-#         longitudes.append(search_db(f"SELECT longitude_deg FROM airport WHERE airport.name = '{airports_dict[i][1]}'")[0][0])
-#
-#     for u in range(0, 6):
-#         coords_dict.update({latitudes[u]: longitudes[u]})
-#
-#     return coords_dict
-# #palauttaa koodrinaatit latitude longitude toisen dictionaryn lentokentille
-
 
 def get_airport_dictionary(location_ident):
     sql = f"SELECT latitude_deg, longitude_deg FROM airport WHERE airport.ident = '{location_ident}'"

@@ -9,6 +9,7 @@ let location_coords = null;//viittaa latitudeen location_coords.latitude <--long
 let destination_coords = null;//viittaa kuten yllä
 let destinationICAO = null;
 let searchedAirport = false;
+let airport_levels = null;
 let new_location = null;
 
 
@@ -284,16 +285,33 @@ async function get_closest_airports(location)
     hide_action_buttons();
     show_travel_dropdown();
     closestAirports = await getAirports(location);
+    await get_airport_levels();
     console.log(closestAirports.airport1);
     document.addEventListener("DOMContentLoaded", fill_airport_dropdown);
     fill_airport_dropdown(closestAirports);
 }
 
-function fill_airport_dropdown(closestAirports)
+async function get_airport_levels()
 {
-    const selectElement = document.getElementById("airportSelect");
+    airport_levels = await getLevels();
+}
 
-    selectElement.innerHTML = '';//clearaa aiemmat vaihtoehdot
+async function getLevels()
+{
+    try {
+        const url = `http://localhost:3000/getAirportLevels?airport1=${encodeURIComponent(closestAirports.airport1)}&airport2=${encodeURIComponent(closestAirports.airport2)}&airport3=${encodeURIComponent(closestAirports.airport3)}&airport4=${encodeURIComponent(closestAirports.airport4)}&airport5=${encodeURIComponent(closestAirports.airport5)}&airport6=${encodeURIComponent(closestAirports.airport6)}`;
+        const response = await fetch(url);
+        const jsonPlayer = await response.json();
+
+        return jsonPlayer;
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+function fill_airport_dropdown(closestAirports) {
+    const selectElement = document.getElementById("airportSelect");
+    selectElement.innerHTML = '';
 
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
@@ -301,13 +319,14 @@ function fill_airport_dropdown(closestAirports)
     selectElement.appendChild(defaultOption);
 
     const airports = [closestAirports.airport1, closestAirports.airport2, closestAirports.airport3, closestAirports.airport4, closestAirports.airport5, closestAirports.airport6];
-    console.log(airports[2])
-    airports.forEach(airport => {
-    const option = document.createElement("option");
-    option.value = airport;
-    option.textContent = airport;
-    selectElement.appendChild(option);
-  });
+    const levels = [airport_levels.level1, airport_levels.level2, airport_levels.level3, airport_levels.level4, airport_levels.level5, airport_levels.level6];
+
+    airports.forEach((airport, index) => {
+        const option = document.createElement("option");
+        option.value = airport;
+        option.textContent = airport + " - Lvl. " + levels[index];
+        selectElement.appendChild(option);
+    });
 }
 
 let selectedAirport = 'null';
