@@ -10,7 +10,7 @@ yhteys = get_connection()
 def load_player():
     pelaajan_nimi = request.args.get('name')
     kursori = yhteys.cursor()
-    kursori.execute(f"SELECT id, screen_name, location FROM player WHERE screen_name = '{pelaajan_nimi}'")
+    kursori.execute(f"SELECT player.id, screen_name, location, airport.name FROM player, airport WHERE player.location = airport.ident AND screen_name = '{pelaajan_nimi}'")
     tulos = kursori.fetchone()
     kursori.close()
 
@@ -18,7 +18,8 @@ def load_player():
         pelaajan_data = {
             'id': tulos[0],
             'screen_name': tulos[1],
-            'location': tulos[2]
+            'location': tulos[2],
+            'location_name': tulos[3]
         }
         return jsonify(pelaajan_data), 200
     else:
