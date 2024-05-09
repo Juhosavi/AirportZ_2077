@@ -10,13 +10,13 @@ let destination_coords = null;//viittaa kuten yllä
 let destinationICAO = null;
 let searchedAirport = false;
 let airport_levels = null;
-let new_location = null;
 
 
 document.getElementById('travel').style.display = 'block';
 document.getElementById('search').style.display = 'block';
 document.getElementById('bandage').style.display = 'block';
 document.getElementById('destination').style.display = 'block';
+document.getElementById('location').style.display = 'block';
 
 
 document.addEventListener('DOMContentLoaded', async function()
@@ -121,6 +121,7 @@ function hideGameInfo() {
 async function fetchFarthestAirport(airportIdent) {
     try {
         document.getElementById('destination').textContent = 'Destination: ' + destinationICAO.destination_name;
+        document.getElementById('location').textContent = 'Location: ' + playerData.location_name;
         setTimeout(() => haeKaupunki(destination_coords.latitude, destination_coords.longitude, "You need to travel here"), 2000);
     } catch (error) {
         console.error('Error fetching farthest airport:', error);
@@ -353,6 +354,7 @@ function handleTravelConfirm() {
 function loadGif(url)
 {
     document.getElementById('destination').style.display = 'none';
+    document.getElementById('location').style.display = 'none';
     let gifContainer = document.getElementById('gifContainer');
     let img = document.createElement('img');
     img.src = url;
