@@ -14,9 +14,11 @@ def battle_victory():
     bandage = request.args.get('bandage')
     player_lvl = request.args.get('player_lvl')
     fuel = search_db(f"SELECT kerosene FROM inventory, player WHERE screen_name = '{screen_name}' AND player.inventory_id = inventory.inventory_id")[0][0]
+    battles_won = search_db(f"SELECT battles_won FROM player WHERE screen_name = '{screen_name}'")[0][0]
+    battles_won = battles_won + 1
     fuel = fuel - 1
 
-    search_db(f"UPDATE inventory, player SET location = '{new_location}', kerosene = '{fuel}', experience = '{experience}', player_health = '{player_hp}', bandage = '{bandage}', player_lvl = '{player_lvl}' WHERE screen_name = '{screen_name}' AND player.inventory_id = inventory.inventory_id")
+    search_db(f"UPDATE inventory, player SET location = '{new_location}', kerosene = '{fuel}', experience = '{experience}', player_health = '{player_hp}', bandage = '{bandage}', player_lvl = '{player_lvl}', battles_won = '{battles_won}' WHERE screen_name = '{screen_name}' AND player.inventory_id = inventory.inventory_id")
 
     result = {'affirm': 'affirmative'
     }

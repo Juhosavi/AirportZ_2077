@@ -5,7 +5,7 @@ let new_location = null;
 let enemyAmount = 0;
 let new_icao = null; //'new_airport' <-- icaoon viitataan tolla
 let enemy_stats = null; //'enemy_lvl', 'enemy_hp', 'min_dmg', 'max_dmg', 'exper'
-let player_stats = null;//'player_lvl', 'experience', 'player_health', 'bandage', 'kerosene', 'max_exp', 'max_hp'
+let player_stats = null;//'player_lvl', 'experience', 'player_health', 'bandage', 'kerosene', 'max_exp', 'max_hp', 'destination', 'battles_won'
 let enemy_list = [];
 let player_dmg = null;//min_dmg, max_dmg
 const first_red = document.getElementById("first_HP_red");
@@ -14,7 +14,6 @@ const third_red = document.getElementById("third_HP_red");
 let width1 = 11.5;
 let width2 = 11.5;
 let width3 = 11.5;
-// let player_turn = true;
 let player_takes_dmg = null;
 let exp_earned = null;
 
@@ -482,7 +481,13 @@ async function victory()
     let duration = 3000;
     setTimeout(function()
     {
-        window.location.href = 'travel.html?parameter1=' + encodeURIComponent(screen_name);
+        if (new_icao.new_airport === player_stats.destination)
+        {
+            window.location.href = 'destination.html?parameter1=' + encodeURIComponent(screen_name) + '&parameter2=' + encodeURIComponent(player_stats.battles_won);
+        }
+        else {
+            window.location.href = 'travel.html?parameter1=' + encodeURIComponent(screen_name);
+        }
     }, duration);
 }
 

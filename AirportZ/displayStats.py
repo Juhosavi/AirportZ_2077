@@ -11,7 +11,7 @@ yhteys = get_connection()
 def player_stats():
     player_name = request.args.get('name')
     kursori = yhteys.cursor()
-    kursori.execute(f"SELECT player_lvl, experience, player_health, bandage, kerosene FROM player, inventory WHERE inventory.inventory_id = player.inventory_id AND screen_name = '{player_name}'")
+    kursori.execute(f"SELECT player_lvl, experience, player_health, bandage, kerosene, destination, battles_won FROM player, inventory WHERE inventory.inventory_id = player.inventory_id AND screen_name = '{player_name}'")
     tulos = kursori.fetchone()
     kursori.close()
 
@@ -33,7 +33,9 @@ def player_stats():
             'bandage': tulos[3],
             'kerosene': tulos[4],
             'max_exp': max_exp,
-            'max_hp': max_hp
+            'max_hp': max_hp,
+            'destination': tulos[5],
+            'battles_won': tulos[6]
         }
         return jsonify(curr_player_stats), 200
     else:

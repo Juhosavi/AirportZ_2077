@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+h1 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 25px;
+    text-align: center;
+    color: antiquewhite;
+    position: fixed;
+    top: 14rem;
+    left: 20rem;
+    right: 0;
+    margin-top: 0;
+    padding: 10px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url('img/destination1_bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#player_pic {
+    position: absolute;
+    top: 10rem;
+    right: 61rem;
+    height: 60%;
+    width: 18%;
+}
+
+#end_game_info {
+    text-align: center;
+    font-size: 20px;
+    position: absolute;
+    top: 48%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    color: antiquewhite;
+    padding: 20px;
+    background: rgba(0,0,0,0.8);
+    border-radius: 10px;
+    width: 35%;
+}
